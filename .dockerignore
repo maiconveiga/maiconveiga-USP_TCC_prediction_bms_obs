@@ -1,0 +1,33 @@
+# flyctl launch added from .gitignore
+**\app\backend\app\__pycache__
+**\elasticsearch_data
+**\app\frontend\node_modules
+**\app\frontend\.next
+**\.env
+
+# flyctl launch added from app\frontend\.gitignore
+# Logs
+app\frontend\**\logs
+app\frontend\**\*.log
+app\frontend\**\npm-debug.log*
+app\frontend\**\yarn-debug.log*
+app\frontend\**\yarn-error.log*
+app\frontend\**\pnpm-debug.log*
+app\frontend\**\lerna-debug.log*
+
+app\frontend\**\node_modules
+app\frontend\**\dist
+app\frontend\**\dist-ssr
+app\frontend\**\*.local
+
+# Editor directories and files
+app\frontend\**\.vscode\*
+!app\frontend\**\.vscode\extensions.json
+app\frontend\**\.idea
+app\frontend\**\.DS_Store
+app\frontend\**\*.suo
+app\frontend\**\*.ntvs*
+app\frontend\**\*.njsproj
+app\frontend\**\*.sln
+app\frontend\**\*.sw?
+fly.toml
