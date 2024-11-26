@@ -115,6 +115,30 @@ services:  # Define os serviços que serão executados
     networks: 
       - bms
 
+        # nome do serviço da aplicação backend
+  model_create:
+    # nome do container do backend
+    container_name: model_create
+    # diretório onde o Dockerfile do backend está localizado para fazer o build e gerar a imagem da aplicação
+    build:
+      context: ./app/backend_modelcreate
+      dockerfile: Dockerfile
+    # variáveis de ambiente para configurar a conexão com o banco de dados
+    volumes:
+      - ./app/backend_modelcreate/app:/src/backend_modelcreate  # mapeia o diretório local do app para o diretório no container
+    # mapeamento de portas: expõe a porta 8000 da máquina local para a porta 8000 do container
+    ports:
+      - "8001:8001"
+    # diretório padrão de trabalho dentro do container
+    working_dir: /src
+    # comando a ser executado quando o container for iniciado
+    command: uvicorn backend_modelcreate.main:app --host 0.0.0.0 --port 8001 --reload
+    # política de reinicialização do container: "always" garante que o container será reiniciado em caso de falha
+    restart: always
+    # define a network docker que o container fará parte
+    networks: 
+      - bms
+
   # nome do serviço do frontend
   frontend:
     # nome do container do frontend

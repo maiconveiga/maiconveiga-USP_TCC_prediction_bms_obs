@@ -5,7 +5,7 @@ FROM python:3.10
 WORKDIR /src
 
 # copiar os arquivos da pasta src (source) para diretório padrão do container
-COPY ./app /src/modelCreate
+COPY ./app /src/app
 
 # copiar o arquivo de instalação dos requisitos do ambiente
 COPY requirements.txt /src

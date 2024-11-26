@@ -1,0 +1,15 @@
+fastapi
+uvicorn
+pandas
+elastic-apm
+sqlalchemy
+joblib
+matplotlib
+scikit-learn
+xgboost
+lightgbm
+catboost
+tensorflow
+pydantic-settings
+pydantic
+numpy

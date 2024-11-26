@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [react()],
+  
   build: {
     // Diretório de saída do build
     outDir: 'dist',
@@ -12,6 +13,7 @@ export default defineConfig({
     emptyOutDir: true,
   },
   server: {
+    
     host: '0.0.0.0',  // Permite que o servidor seja acessível externamente
     port: 3000,        // Porta padrão do Vite, ajuste se necessário
   }

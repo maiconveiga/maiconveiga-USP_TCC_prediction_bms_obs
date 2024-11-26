@@ -13,7 +13,15 @@
     ```bash
    docker compose up -d
     ```
+### Portas
 
+1. Weave Scope http://localhost:4040
+2. Frontend http://localhost:3000
+3. Backend app http://localhost:8000
+4. Backend model_create http://localhost:8001
+5. App NGINX http://localhost:9001
+6. create_movel NGINX http://localhost:9001/train
+7. Kibana http://localhost:5601/
 ### Possíveis erros
 
 

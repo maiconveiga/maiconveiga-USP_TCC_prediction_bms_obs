@@ -99,7 +99,7 @@ const Conteudo: React.FC<ConteudoProps> = ({ forecastChiller }) => {
     <div className="content-container">
       {forecastChiller.length === 0 ? (
         <div className="empty-message">
-          Acesse o menu lateral para parametrização.
+          Acesse o menu lateral para parametrização!
         </div>
       ) : (
         <>
