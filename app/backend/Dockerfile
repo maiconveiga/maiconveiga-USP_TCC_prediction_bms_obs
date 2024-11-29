@@ -1,5 +1,6 @@
 # base da imagem Docker a ser utilizada
 FROM python:3.10
+# FROM python:3.12.1
 
 # adicionar a camada que será o diretório padrão a ser utilizado
 WORKDIR /src

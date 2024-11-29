@@ -1,16 +1,15 @@
 from fastapi import FastAPI
-from AED_Tratar import tratarChiller, tratarFancoil, tratarCAG, tratarAHU
-from AED_BMS import getBMS
-from UTILS import getListaEquipamentos, juntarDF, juntarAHUCAG
-from EAD_Meteorologico import DadosMeteorologicos
-from model import Prever
+from app.AED_Tratar import tratarChiller, tratarFancoil, tratarCAG, tratarAHU
+from app.AED_BMS import getBMS
+from app.UTILS import getListaEquipamentos, juntarDF, juntarAHUCAG
+from app.EAD_Meteorologico import DadosMeteorologicos
+from app.model import Prever
 import pandas as pd
 import threading 
 # from elasticapm.contrib.starlette import make_apm_client, ElasticAPM
-# from config import logger
+# from app.config import logger
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-
 
 app = FastAPI()
 

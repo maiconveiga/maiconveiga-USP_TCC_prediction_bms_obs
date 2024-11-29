@@ -5,7 +5,7 @@ def DadosMeteorologicos(df):
     from pathlib import Path
 
     #%% Leitura do arquivo    
-    file_path = Path("Dados/Meteorologia.xlsx")
+    file_path = Path("app/Dados/Meteorologia.xlsx")
     if not file_path.exists():
         raise FileNotFoundError(f"Arquivo não encontrado: {file_path}")
     df_meteo = pd.read_excel(file_path)

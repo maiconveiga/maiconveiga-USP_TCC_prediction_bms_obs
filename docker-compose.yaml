@@ -1,119 +1,119 @@
 services:  # Define os serviços que serão executados
 
-  elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.0  # Imagem do Elasticsearch
-    container_name: elasticsearch  # Nome do container
-    environment:  # Configurações de ambiente para o Elasticsearch
-      - node.name=elasticsearch  # Nome do nó
-      - cluster.name=es-docker-cluster  # Nome do cluster
-      - bootstrap.memory_lock=true  # Impede que o processo do Elasticsearch seja swapado
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"  # Define o uso de memória para a JVM (mínimo e máximo 512MB)
-      - http.cors.enabled=true  # Habilita CORS
-      - http.cors.allow-origin="*"  # Permite requisições de qualquer origem (CORS)
-      - discovery.type=single-node  # Configura o Elasticsearch como um nó único
-    ulimits:
-      memlock:  # Ajustes de limites de memória
-        soft: -1  # Limite suave indefinido (sem limite)
-        hard: -1  # Limite duro indefinido (sem limite)
-    volumes:
-      - ./elasticsearch_data:/usr/share/elasticsearch/data  # Monta um volume para persistência de dados
-    ports:
-      - 9200:9200  # Mapeia a porta 9200 do container para a porta 9200 da máquina host (acesso ao Elasticsearch)
-    networks: 
-      - bms  # Define a rede para comunicação com outros serviços
+  # elasticsearch:
+  #   image: docker.elastic.co/elasticsearch/elasticsearch:7.17.0  # Imagem do Elasticsearch
+  #   container_name: elasticsearch  # Nome do container
+  #   environment:  # Configurações de ambiente para o Elasticsearch
+  #     - node.name=elasticsearch  # Nome do nó
+  #     - cluster.name=es-docker-cluster  # Nome do cluster
+  #     - bootstrap.memory_lock=true  # Impede que o processo do Elasticsearch seja swapado
+  #     - "ES_JAVA_OPTS=-Xms512m -Xmx512m"  # Define o uso de memória para a JVM (mínimo e máximo 512MB)
+  #     - http.cors.enabled=true  # Habilita CORS
+  #     - http.cors.allow-origin="*"  # Permite requisições de qualquer origem (CORS)
+  #     - discovery.type=single-node  # Configura o Elasticsearch como um nó único
+  #   ulimits:
+  #     memlock:  # Ajustes de limites de memória
+  #       soft: -1  # Limite suave indefinido (sem limite)
+  #       hard: -1  # Limite duro indefinido (sem limite)
+  #   volumes:
+  #     - ./elasticsearch_data:/usr/share/elasticsearch/data  # Monta um volume para persistência de dados
+  #   ports:
+  #     - 9200:9200  # Mapeia a porta 9200 do container para a porta 9200 da máquina host (acesso ao Elasticsearch)
+  #   networks: 
+  #     - bms  # Define a rede para comunicação com outros serviços
 
-  kibana:
-    image: docker.elastic.co/kibana/kibana:7.17.0  # Imagem do Kibana
-    container_name: kibana  # Nome do container
-    ports:
-      - 5601:5601  # Mapeia a porta 5601 para acessar o Kibana no host
-    environment:  # Configurações de ambiente do Kibana
-      ELASTICSEARCH_URL: http://elasticsearch:9200  # URL do Elasticsearch
-      ELASTICSEARCH_HOSTS: '["http://elasticsearch:9200"]'  # Lista de hosts do Elasticsearch
-    networks: 
-      - bms  # Usa a mesma rede para comunicação com o Elasticsearch
+  # kibana:
+  #   image: docker.elastic.co/kibana/kibana:7.17.0  # Imagem do Kibana
+  #   container_name: kibana  # Nome do container
+  #   ports:
+  #     - 5601:5601  # Mapeia a porta 5601 para acessar o Kibana no host
+  #   environment:  # Configurações de ambiente do Kibana
+  #     ELASTICSEARCH_URL: http://elasticsearch:9200  # URL do Elasticsearch
+  #     ELASTICSEARCH_HOSTS: '["http://elasticsearch:9200"]'  # Lista de hosts do Elasticsearch
+  #   networks: 
+  #     - bms  # Usa a mesma rede para comunicação com o Elasticsearch
 
-  metricbeat:
-    image: docker.elastic.co/beats/metricbeat:7.17.0  # Imagem do Metricbeat para monitoramento de métricas
-    container_name: metricbeat  # Nome do container
-    environment:  # Configurações de ambiente do Kibana
-      - BEAT_STRICT_PERMS=false # Acessar as configurações sem restringir permissão de usuário
-      # - BEAT_STRICT_PERMS=2 # Caso a configuração não suba os containers por conta de versão do docker
-    user: "root:root"  # Executa o container como root
-    volumes:  # Volumes montados para acessar o Docker Socket e o arquivo de configuração
-      - /var/run/docker.sock:/var/run/docker.sock  # Permite o Metricbeat monitorar contêineres Docker
-      - ./beats/metric/metricbeat.yml:/usr/share/metricbeat/metricbeat.yml  # Arquivo de configuração do Metricbeat
-    restart: on-failure  # Reinicia o container em caso de falha
-    networks: 
-      - bms  # Usa a rede "observabilidade"
+  # metricbeat:
+  #   image: docker.elastic.co/beats/metricbeat:7.17.0  # Imagem do Metricbeat para monitoramento de métricas
+  #   container_name: metricbeat  # Nome do container
+  #   environment:  # Configurações de ambiente do Kibana
+  #     - BEAT_STRICT_PERMS=false # Acessar as configurações sem restringir permissão de usuário
+  #     # - BEAT_STRICT_PERMS=2 # Caso a configuração não suba os containers por conta de versão do docker
+  #   user: "root:root"  # Executa o container como root
+  #   volumes:  # Volumes montados para acessar o Docker Socket e o arquivo de configuração
+  #     - /var/run/docker.sock:/var/run/docker.sock  # Permite o Metricbeat monitorar contêineres Docker
+  #     - ./beats/metric/metricbeat.yml:/usr/share/metricbeat/metricbeat.yml  # Arquivo de configuração do Metricbeat
+  #   restart: on-failure  # Reinicia o container em caso de falha
+  #   networks: 
+  #     - bms  # Usa a rede "observabilidade"
 
-  heartbeat:
-    image: docker.elastic.co/beats/heartbeat:7.17.0  # Imagem do Heartbeat para monitoramento de uptime
-    user: "root:root"  # Executa o container como root
-    container_name: heartbeat  # Nome do container
-    volumes:      
-      - ./beats/heartbeat/heartbeat.yml:/usr/share/heartbeat/heartbeat.yml  # Monta o arquivo de configuração do Heartbeat
-    environment: 
-      - setup.kibana.host=kibana:5601  # Define o Kibana como host para o setup do Heartbeat
-      - BEAT_STRICT_PERMS=false # Acessar as configurações sem restringir permissão de usuário
-      # - BEAT_STRICT_PERMS=2 # Caso a configuração não suba os containers por conta de versão do docker
-    networks: 
-      - bms  # Usa a rede "observabilidade"
+  # heartbeat:
+  #   image: docker.elastic.co/beats/heartbeat:7.17.0  # Imagem do Heartbeat para monitoramento de uptime
+  #   user: "root:root"  # Executa o container como root
+  #   container_name: heartbeat  # Nome do container
+  #   volumes:      
+  #     - ./beats/heartbeat/heartbeat.yml:/usr/share/heartbeat/heartbeat.yml  # Monta o arquivo de configuração do Heartbeat
+  #   environment: 
+  #     - setup.kibana.host=kibana:5601  # Define o Kibana como host para o setup do Heartbeat
+  #     - BEAT_STRICT_PERMS=false # Acessar as configurações sem restringir permissão de usuário
+  #     # - BEAT_STRICT_PERMS=2 # Caso a configuração não suba os containers por conta de versão do docker
+  #   networks: 
+  #     - bms  # Usa a rede "observabilidade"
 
-  apm:
-    image: docker.elastic.co/apm/apm-server-oss:7.17.0  # Imagem do APM Server para monitoramento de performance
-    container_name: apm  # Nome do container
-    user: "root:root"  # Executa o container como root
-    volumes:      
-      - ./apm/apm-server.yml:/usr/share/apm-server/apm-server.yml  # Monta o arquivo de configuração do APM
-    environment:  # Configurações de ambiente do apm
-      - BEAT_STRICT_PERMS=false # Acessar as configurações sem restringir permissão de usuário
-      # - BEAT_STRICT_PERMS=2 # Caso a configuração não suba os containers por conta de versão do docker
-    ports:
-      - "8200:8200"  # Mapeia a porta 8200 para o APM server
-    restart: on-failure  # Reinicia o container em caso de falha
-    networks: 
-      - bms  # Usa a rede "observabilidade"
+  # apm:
+  #   image: docker.elastic.co/apm/apm-server-oss:7.17.0  # Imagem do APM Server para monitoramento de performance
+  #   container_name: apm  # Nome do container
+  #   user: "root:root"  # Executa o container como root
+  #   volumes:      
+  #     - ./apm/apm-server.yml:/usr/share/apm-server/apm-server.yml  # Monta o arquivo de configuração do APM
+  #   environment:  # Configurações de ambiente do apm
+  #     - BEAT_STRICT_PERMS=false # Acessar as configurações sem restringir permissão de usuário
+  #     # - BEAT_STRICT_PERMS=2 # Caso a configuração não suba os containers por conta de versão do docker
+  #   ports:
+  #     - "8200:8200"  # Mapeia a porta 8200 para o APM server
+  #   restart: on-failure  # Reinicia o container em caso de falha
+  #   networks: 
+  #     - bms  # Usa a rede "observabilidade"
 
-  elastalert:
-    image: jertel/elastalert2  # Imagem do ElastAlert para alertas baseados em dados do Elasticsearch
-    container_name: elastalert  # Nome do container
-    volumes:
-      - ./elastalert/elastalert.yaml:/opt/elastalert/config.yaml  # Monta o arquivo de configuração do ElastAlert
-      - ./elastalert/rules:/opt/elastalert/rules  # Monta o diretório contendo as regras do ElastAlert
-    depends_on:
-      - elasticsearch  # Define dependência do serviço Elasticsearch
-    restart: on-failure  # Reinicia o container em caso de falha
-    networks:
-      - bms  # Usa a rede "observabilidade"
+  # elastalert:
+  #   image: jertel/elastalert2  # Imagem do ElastAlert para alertas baseados em dados do Elasticsearch
+  #   container_name: elastalert  # Nome do container
+  #   volumes:
+  #     - ./elastalert/elastalert.yaml:/opt/elastalert/config.yaml  # Monta o arquivo de configuração do ElastAlert
+  #     - ./elastalert/rules:/opt/elastalert/rules  # Monta o diretório contendo as regras do ElastAlert
+  #   depends_on:
+  #     - elasticsearch  # Define dependência do serviço Elasticsearch
+  #   restart: on-failure  # Reinicia o container em caso de falha
+  #   networks:
+  #     - bms  # Usa a rede "observabilidade"
 
-  # nome do serviço da aplicação backend
-  app:
-    # nome do container do backend
-    container_name: app
-    # diretório onde o Dockerfile do backend está localizado para fazer o build e gerar a imagem da aplicação
-    build:
-      context: ./app/backend
-      dockerfile: Dockerfile
-    # variáveis de ambiente para configurar a conexão com o banco de dados
-    environment:
-      - API_KEY=${API_KEY}   
-      - CIDADE=${CIDADE}   
-    # volumes compartilhados entre a máquina local e o container do backend
-    volumes:
-      - ./app/backend/app:/src/app  # mapeia o diretório local do app para o diretório no container
-    # mapeamento de portas: expõe a porta 8000 da máquina local para a porta 8000 do container
-    ports:
-      - "8000:8000"
-    # diretório padrão de trabalho dentro do container
-    working_dir: /src
-    # comando a ser executado quando o container for iniciado
-    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
-    # política de reinicialização do container: "always" garante que o container será reiniciado em caso de falha
-    restart: always
-    # define a network docker que o container fará parte
-    networks: 
-      - bms
+  # # nome do serviço da aplicação backend
+  # app:
+  #   # nome do container do backend
+  #   container_name: app
+  #   # diretório onde o Dockerfile do backend está localizado para fazer o build e gerar a imagem da aplicação
+  #   build:
+  #     context: ./app/backend
+  #     dockerfile: Dockerfile
+  #   # variáveis de ambiente para configurar a conexão com o banco de dados
+  #   environment:
+  #     - API_KEY=${API_KEY}   
+  #     - CIDADE=${CIDADE}   
+  #   # volumes compartilhados entre a máquina local e o container do backend
+  #   volumes:
+  #     - ./app/backend/app:/src/app  # mapeia o diretório local do app para o diretório no container
+  #   # mapeamento de portas: expõe a porta 8000 da máquina local para a porta 8000 do container
+  #   ports:
+  #     - "8000:8000"
+  #   # diretório padrão de trabalho dentro do container
+  #   working_dir: /src
+  #   # comando a ser executado quando o container for iniciado
+  #   command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+  #   # política de reinicialização do container: "always" garante que o container será reiniciado em caso de falha
+  #   restart: always
+  #   # define a network docker que o container fará parte
+  #   networks: 
+  #     - bms
 
         # nome do serviço da aplicação backend
   model_create:
@@ -139,44 +139,44 @@ services:  # Define os serviços que serão executados
     networks: 
       - bms
 
-  # nome do serviço do frontend
-  frontend:
-    # nome do container do frontend
-    container_name: frontend
-    # diretório onde o Dockerfile do frontend está localizado para fazer o build e gerar a imagem
-    build:
-      context: ./app/frontend
-      dockerfile: Dockerfile
-    # volumes compartilhados entre a máquina local e o container do frontend
-    volumes:
-      - dependencias_frontend:/src/node_modules  # volume persistente para node_modules
-      - ./app/frontend:/src  # mapeia o diretório do frontend local para o container
-    # mapeamento de portas: expõe a porta 3000 da máquina local para a porta 3000 do container
-    ports:
-      - "3000:3000"
-    # comando a ser executado quando o container for iniciado
-    command: npm run dev
-    # define a network docker que o container fará parte
-    networks: 
-      - bms
+#   # nome do serviço do frontend
+#   frontend:
+#     # nome do container do frontend
+#     container_name: frontend
+#     # diretório onde o Dockerfile do frontend está localizado para fazer o build e gerar a imagem
+#     build:
+#       context: ./app/frontend
+#       dockerfile: Dockerfile
+#     # volumes compartilhados entre a máquina local e o container do frontend
+#     volumes:
+#       - dependencias_frontend:/src/node_modules  # volume persistente para node_modules
+#       - ./app/frontend:/src  # mapeia o diretório do frontend local para o container
+#     # mapeamento de portas: expõe a porta 3000 da máquina local para a porta 3000 do container
+#     ports:
+#       - "3000:3000"
+#     # comando a ser executado quando o container for iniciado
+#     command: npm run dev
+#     # define a network docker que o container fará parte
+#     networks: 
+#       - bms
 
-  # nome do serviço NGINX
-  nginx:
-    # diretório onde o Dockerfile do NGINX está localizado para fazer o build
-    build: ./nginx
-    # nome do container do NGINX
-    container_name: nginx
-    # mapeamento de portas: expõe a porta 9001 da máquina local para a porta 80 do container (porta padrão do NGINX)
-    ports:
-      - "9001:80"
-    # define a network docker que o container fará parte
-    networks: 
-      - bms
+#   # nome do serviço NGINX
+#   nginx:
+#     # diretório onde o Dockerfile do NGINX está localizado para fazer o build
+#     build: ./nginx
+#     # nome do container do NGINX
+#     container_name: nginx
+#     # mapeamento de portas: expõe a porta 9001 da máquina local para a porta 80 do container (porta padrão do NGINX)
+#     ports:
+#       - "9001:80"
+#     # define a network docker que o container fará parte
+#     networks: 
+#       - bms
 
-# volumes docker a serem criados
-volumes:
-  # volume para as dependências do frontend (node_modules)
-  dependencias_frontend:
+# # volumes docker a serem criados
+# volumes:
+#   # volume para as dependências do frontend (node_modules)
+#   dependencias_frontend:
 
 networks:
   bms:

@@ -4,7 +4,8 @@ def conexaoBanco():
     from sqlalchemy import create_engine
     
     #Dados para inserir
-    machine = 'M5282650'
+    # machine = 'M5282650'
+    machine = '172.30.208.1'
     instance = 'SQLEXPRESS'
     username = 'py'
     password = 'py'

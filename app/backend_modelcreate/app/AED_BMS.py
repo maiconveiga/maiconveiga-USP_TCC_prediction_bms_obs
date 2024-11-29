@@ -1,11 +1,11 @@
 def getBMS():
     import pandas as pd
-    from UTILS import conexaoBanco
+    from app.UTILS import conexaoBanco
     from pathlib import Path
     #%% Conexão
     
     #%% Leitura do arquivo    
-    file_path = Path("Dados\Lista_Pontos.xlsx")
+    file_path = Path("app/Dados/Lista_Pontos.xlsx")
     if not file_path.exists():
         raise FileNotFoundError(f"Arquivo não encontrado: {file_path}")
     df_lista = pd.read_excel(file_path)

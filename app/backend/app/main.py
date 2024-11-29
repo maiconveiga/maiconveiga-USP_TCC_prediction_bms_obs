@@ -12,6 +12,8 @@ from app.config import settings
 from app.config import logger
 import asyncio
 
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+
 app = FastAPI()
 
 # Configuração do Elastic APM
