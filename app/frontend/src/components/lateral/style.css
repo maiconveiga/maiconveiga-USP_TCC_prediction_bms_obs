@@ -81,11 +81,13 @@
   cursor: pointer;
   font-size: 15px;
   margin-top: 10px;
+  width: 100%;
 }
 
 .sidebar button[type="submit"]:hover {
   background-color: #8c989e;
   color: #2c3e50;
+  width: 100%;
 }
 
 .loading {
@@ -185,9 +187,9 @@
   /* Botão de envio ocupando 100% da largura */
   .sidebar button[type="submit"] {
     width: 100%;
-    padding: 12px;
+    padding: 10px;
     margin-top: 10px;
-    font-size: 16px;
+    font-size: 15px;
     background-color: #60686c;
     color: #fff;
     border: none;
@@ -200,3 +202,28 @@
     color: #2c3e50;
   }
 }
+
+
+/* NOVO */
+
+.train-button {
+  padding: 10px;
+  background-color: #ff9800;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 15px;
+  margin-top: 10px;
+  width: 100%;
+}
+
+.train-button:hover {
+  background-color: #e68a00;
+}
+
+.train-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+

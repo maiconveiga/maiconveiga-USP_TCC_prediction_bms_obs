@@ -42,3 +42,24 @@
     font-size: 12px;
   }
 }
+
+
+/* novo */
+
+.train-result table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+}
+
+.train-result th,
+.train-result td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+.train-result th {
+  background-color: #f4f4f4;
+  font-weight: bold;
+}

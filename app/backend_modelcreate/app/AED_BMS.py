@@ -1,11 +1,15 @@
 def getBMS():
     import pandas as pd
     from UTILS import conexaoBanco
-
-    
+    from pathlib import Path
     #%% Conexão
     
-    df_lista = pd.read_excel('Dados BMS\Lista_Pontos.xlsx')
+    #%% Leitura do arquivo    
+    file_path = Path("Dados\Lista_Pontos.xlsx")
+    if not file_path.exists():
+        raise FileNotFoundError(f"Arquivo não encontrado: {file_path}")
+    df_lista = pd.read_excel(file_path)
+
     engine = conexaoBanco()
     
     #%% Coleta
@@ -80,8 +84,6 @@ def getBMS():
     # Preencher os valores NaN para cada DataFrame de equipamento
     for equipamento in dfs_equipamentos:
         dfs_equipamentos[equipamento] = dfs_equipamentos[equipamento].reset_index()
-        #dfs_equipamentos[equipamento] = dfs_equipamentos[equipamento].ffill().reset_index()
         dfs_equipamentos[equipamento] = dfs_equipamentos[equipamento].rename(columns={'index': 'UTCDateTime'})
 
     return dfs_equipamentos
-

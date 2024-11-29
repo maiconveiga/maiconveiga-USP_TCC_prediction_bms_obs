@@ -3,3 +3,8 @@ elasticsearch_data/
 app/frontend/node_modules
 app/frontend/.next
 .env
+ModelsDeploy
+models.db
+venv
+app/backend/app/models
+app/backend_modelcreate/app/models

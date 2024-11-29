@@ -2,9 +2,14 @@ def DadosMeteorologicos(df):
     
     #%% Importações    
     import pandas as pd
-    
+    from pathlib import Path
+
     #%% Leitura do arquivo    
-    df_meteo = pd.read_excel('Dados meteorologicos/meteo.xlsx')
+    file_path = Path("Dados/Meteorologia.xlsx")
+    if not file_path.exists():
+        raise FileNotFoundError(f"Arquivo não encontrado: {file_path}")
+    df_meteo = pd.read_excel(file_path)
+
     
     #%% Criação da coluna UTCDateTime
     df_meteo['Data'] = df_meteo['Data'].astype(str)
@@ -83,15 +88,10 @@ def DadosMeteorologicos(df):
 
     #%% Copia de dataframe sem dados faltantes e join com o dataframe final
     
-    #df_SemNA = df_meteo.dropna().copy()
-    #df_SemNA = df_meteo.copy()    
-    
     df_meteo.loc[:, 'UTCDateTime'] = pd.to_datetime(df_meteo['UTCDateTime'], errors='coerce')
-    #df_SemNA['UTCDateTime'] = pd.to_datetime(df_SemNA['UTCDateTime'], errors='coerce')
     df['UTCDateTime'] = pd.to_datetime(df['UTCDateTime'], errors='coerce')
     
     df_merged = pd.merge(df_meteo, df, on='UTCDateTime', how='left')
     df = df_merged.dropna(subset=[col for col in df.columns if col not in ['UTCDateTime']], how='all')
-    #df = df.fillna(df.median())
-    
+ 
     return df

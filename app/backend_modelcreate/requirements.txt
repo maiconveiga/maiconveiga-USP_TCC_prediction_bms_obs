@@ -13,3 +13,5 @@ tensorflow
 pydantic-settings
 pydantic
 numpy
+openpyxl
+pyodbc
