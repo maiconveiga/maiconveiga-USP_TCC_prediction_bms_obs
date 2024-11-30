@@ -10,6 +10,7 @@ import threading
 # from app.config import logger
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+from app.teste import testar_conexao
 
 app = FastAPI()
 
@@ -60,6 +61,11 @@ df_storage = DataFrameStorage()
 @app.get("/")
 async def root():
     return {"message": "API Train em operação!"}
+
+@app.get("/testar-conexao")
+def endpoint_testar_conexao():
+    resultado = testar_conexao()
+    return {"message": resultado}
 
 
 # @app.post("/generate-graphs")
