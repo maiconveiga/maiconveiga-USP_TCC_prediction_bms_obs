@@ -16,18 +16,18 @@ from app.teste import testar_conexao
 app = FastAPI()
 
 # Configuração do Elastic APM
-# apm = make_apm_client(
-#     {
-#         "SERVICE_NAME": "backend_train",
-#         "DEBUG": True,
-#         "SERVER_URL": "http://apm:8200",
-#         "ENVIRONMENT": "development",
-#         'DISABLE_INSTRUMENTATIONS': [
-#         'pymysql', 'pymongo', 'redis', 'aioredis', 
-#         'psycopg2', 'pylibmc', 'django', 'graphql'
-#     ],
-#     }
-# )
+apm = make_apm_client(
+    {
+        "SERVICE_NAME": "backend_train",
+        "DEBUG": True,
+        "SERVER_URL": "http://apm:8200",
+        "ENVIRONMENT": "development",
+        'DISABLE_INSTRUMENTATIONS': [
+        'pymysql', 'pymongo', 'redis', 'aioredis', 
+        'psycopg2', 'pylibmc', 'django', 'graphql'
+    ],
+    }
+)
 
 app.add_middleware(
     CORSMiddleware,
@@ -38,9 +38,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# app.add_middleware(ElasticAPM, client=apm)
+app.add_middleware(ElasticAPM, client=apm)
 
-# logger.debug("Elastic APM client initialized: %s", apm)
+logger.debug("Elastic APM client initialized: %s", apm)
 
 class TrainRequest(BaseModel):
     siteID: int
