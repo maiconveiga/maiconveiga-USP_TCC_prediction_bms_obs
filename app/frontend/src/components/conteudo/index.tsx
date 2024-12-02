@@ -243,7 +243,7 @@ const Conteudo: React.FC<ConteudoProps> = ({ forecastChiller, trainResult }) => 
   return (
     <div className="content-container">
       {forecastChiller.length === 0 && trainResult.length === 0 ? (
-        <div className="empty-message">Acesse o menu lateral para parametrização!</div>
+        <div className="empty-message">Acesse o menu lateral para parametrização!!</div>
       ) : (
         <>
           {trainResult.length > 0 && renderTrainResultTable()}
